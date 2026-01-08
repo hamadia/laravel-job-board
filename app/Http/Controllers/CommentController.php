@@ -9,22 +9,40 @@ class CommentController extends Controller
 {
     public function index()
     {
-        $data = Comment::all();
+        $data = Comment::cursorPaginate(10);
 
-        return view('comment.index', ['comments' => $data, "pageTitle" => "Blog"]);
+        return view('comment.index', ['comments' => $data, "pageTitle" => "Comments"]);
     }
 
     public function create()
     {
-        // $comment = Comment::create(
-        //     [
-        //         'author' => 'Aliaa',
-        //         'content'=>'This is test comment',
-        //         'post_id'=>2,
-        //     ]
-        // );
+        return view('comment.create',["pageTitle"=>"Blog - Create New Comment"]);
+    }
 
-        Comment::factory(5)->create();
-        return redirect('/comments');
+    public function store(Request $request)
+    {
+        //ToDo will be completed in forms section
+    }
+
+    public function show(string $id)
+    {
+        $comments = Comment::findOrFail($id);
+        return view('comment.show',["comment"=>$comments,"pageTitle"=>"Blog - View Comments"]);
+
+    }
+
+    public function edit(string $id)
+    {
+        return view('comment.edit',["pageTitle"=>"Edit Comment"]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        //ToDo
+    }
+
+    public function destroy(string $id)
+    {
+        //ToDo
     }
 }

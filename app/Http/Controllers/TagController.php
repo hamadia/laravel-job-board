@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\tag;
 use Illuminate\Http\Request;
 
@@ -10,31 +9,39 @@ class TagController extends Controller
 {
     public function index()
     {
-        $data = Tag::all();
+        $data = Tag::cursorPaginate(10);
 
         return view('tag.index', ['tags' => $data, "pageTitle" => "Tags"]);
     }
 
     public function create()
     {
-        $tag = Tag::create(
-            [
-                'title' => 'Css',
-            ]
-        );
-        return redirect('/tags');
+        return view('tag.create',["pageTitle"=>"Blog - Create Tag"]);
     }
 
-    public function testManyToMany(){
-        $post3=Post::find(3);
-        $post1=Post::find(1);
+    public function store(Request $request)
+    {
+        //ToDo
+    }
 
-        $post3->tags()->attach([1,2]);
-        $post1->tags()->attach([1]);
+    public function show(string $id)
+    {
+        $tag = Tag::findOrFail($id);
+        return view('tag.show',["tag"=>$tag,"pageTitle"=>"Blog - View Tag"]);
+    }
 
-        return response()->json([
-            'post3'=>$post3->tags,
-            'post1'=>$post1->tags,
-        ]);
+    public function edit(string $id)
+    {
+        return view('tag.edit',["pageTitle"=>"Blog - Edit Tag"]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        //ToDo
+    }
+
+    public function destroy(string $id)
+    {
+        //ToDo
     }
 }

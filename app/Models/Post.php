@@ -19,7 +19,6 @@ class Post extends Model
     'body',
     'author',
     'published',
-    
    ];
 
    protected $guarded=[

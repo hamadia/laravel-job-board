@@ -14,26 +14,35 @@ class PostController extends Controller
         return view('post.index', ['posts' => $data, "pageTitle" => "Blog"]);
     }
 
-    public function show($id)
+    public function create()
+    {
+        return view('post.create',['pageTitle'=>'Blog - Create New Post']);
+    }
+
+    public function store(Request $request)
+    {
+        // ToDo this will be completed in the forms section
+    }
+
+    public function show(string $id)
     {
         $post = Post::findOrFail($id);
         return view('post.show',['post'=>$post,"pageTitle" => $post->title]);
     }
-    public function create()
-    {
-        // $post = Post::create(
-        //     [
-        //         'title' => 'My first post',
-        //         'body' => 'This is to test Uuid ',
-        //         'author' => 'Aliaa',
-        //         'published' => true,
-        //     ]
-        // );
+    
 
-        Post::factory(100)->create();
-        return redirect('/blog');
+    public function edit(string $id)
+    {
+      return view('post.edit',['pageTitle'=>'Blog - Edit Post']);
     }
-    public function delete(){
-        Post::destroy(2);
+
+    public function update(Request $request, string $id)
+    {
+        // ToDo this will be completed in the forms section
+    }
+
+    public function destroy(string $id)
+    {
+        //ToDo will be completed in forms section
     }
 }
