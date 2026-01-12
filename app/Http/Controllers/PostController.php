@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogPostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -9,40 +10,58 @@ class PostController extends Controller
 {
     public function index()
     {
-        $data = Post::cursorPaginate(10);
+        $data = Post::latest()->cursorPaginate(10);
 
         return view('post.index', ['posts' => $data, "pageTitle" => "Blog"]);
     }
 
     public function create()
     {
-        return view('post.create',['pageTitle'=>'Blog - Create New Post']);
+        return view('post.create', ['pageTitle' => 'Blog - Create New Post']);
     }
 
-    public function store(Request $request)
+    public function store(BlogPostRequest $request)
     {
-        // ToDo this will be completed in the forms section
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->author = $request->input('author');
+        $post->body = $request->input('body');
+        $post->published = $request->has('published');
+
+        $post->save();
+
+        return redirect('/blog')->with('success', 'Post created successfully');
     }
 
     public function show(string $id)
     {
         $post = Post::findOrFail($id);
-        return view('post.show',['post'=>$post,"pageTitle" => $post->title]);
+        return view('post.show', ['post' => $post, "pageTitle" => $post->title]);
     }
-    
+
 
     public function edit(string $id)
     {
-      return view('post.edit',['pageTitle'=>'Blog - Edit Post']);
+        $post = Post::findOrFail($id);
+        return view('post.edit', ["post" => $post, "pageTitle" => "Blog - Edit Post : " . $post->title]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(BlogPostRequest $request, string $id)
     {
-        // ToDo this will be completed in the forms section
+        $post = Post::findOrFail($id);
+        $post->title = $request->input('title');
+        $post->author = $request->input('author');
+        $post->body = $request->input('body');
+        $post->published = $request->has('published');
+
+        $post->save();
+        return redirect('/blog')->with('success', 'Post updated successfully');
     }
 
     public function destroy(string $id)
     {
-        //ToDo will be completed in forms section
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect('/blog')->with('success','The post deleted successfully');
     }
 }

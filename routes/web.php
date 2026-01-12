@@ -9,9 +9,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [IndexController::class]);
-Route::get('/about', [AboutController::class]);
-Route::get('/contact', [ContactController::class]);
+Route::get('/', IndexController::class);
+Route::get('/about', AboutController::class);
+Route::get('/contact', ContactController::class);
 
 Route::get('/job',[JobController::class,'index']);
 
